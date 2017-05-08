@@ -1,53 +1,59 @@
 package com.example.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
-@Table(name = "trader")
+@Table(name = "Trader")
 public class Trader {
 
 	@JsonView(View.Trader.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
+	@Column(name = "username", unique = true)
+	private String username;
+
+	@JsonIgnore
+	@Column(name = "password")
+	private String password;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "trader_authority",
+        joinColumns = @JoinColumn(name = "trader_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
+    )
+	private List<Authority> authorities;
+
 	@JsonView(View.Trader.class)
 	@OneToMany(mappedBy = "trader", fetch = FetchType.LAZY)
 	private Set<Trade> trades = new HashSet<Trade>();
-	
+
 	@JsonView(View.Trader.class)
 	@Column(name = "first_name")
 	private String firstName;
-	
+
 	@JsonView(View.Trader.class)
 	@Column(name = "last_name")
 	private String lastName;
-	
+
 	@JsonView(View.Trader.class)
 	@Column(name = "email")
 	private String email;
 
-	
+
 	public Trader(){
-		
+
 	}
-	
+
 	public Trader(String firstName, String lastName, String email) {
 		super();
 		this.firstName = firstName;
@@ -59,7 +65,7 @@ public class Trader {
 		trades.add(trade);
 		trade.setTrader(this);
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -99,6 +105,6 @@ public class Trader {
 	public void setTrades(Set<Trade> trades) {
 		this.trades = trades;
 	}
-	
-	
+
+
 }

@@ -24,48 +24,48 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 
 @Entity
-@Table(name = "trade")
+@Table(name = "Trade")
 public class Trade {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonView(View.Trader.class)
 	private int id;
-	
-	@ManyToOne(cascade = {CascadeType.MERGE} )
+
+	@ManyToOne(cascade = {CascadeType.ALL} )
 	@JoinColumn(name="trader_id")
 	@JsonIgnore
 	private Trader trader;
-	
+
 	@Lob
 	@Column(name = "image")
 	private byte[] image;
-	
+
 	@Column(name = "side")
 	private String side;
-	
+
 	@JsonView(View.Trader.class)
 	@Column(name = "instrument_name")
 	private String instrumentName;
-	
+
 	@Column(name = "number_of_instruments")
 	private long numberOfInstruments;
-	
+
 	@Column(name = "entry_price")
 	private float entryPrice;
-	
+
 	@Column(name = "current_close_price")
 	private float currentClosePrice;
-	
+
 	@Column(name = "close_price")
 	private float closePrice;
-	
+
 	@Column(name = "open_time")
 	private Date openTime;
-	
+
 	@Column(name = "close_time")
 	private LocalDateTime closeTime;
-	
+
 	@Column(name = "notes")
 	private String notes;
 
@@ -73,11 +73,11 @@ public class Trade {
 //	public String serializeTrade(){
 //		return String.valueOf(id);
 //	}
-	
+
 	public Trade(){
-		
+
 	}
-	
+
 	public Trade(String instrumentName, long numberOfInstruments, float entryPrice,
 			Date openTime) {
 		super();
@@ -86,7 +86,7 @@ public class Trade {
 		this.entryPrice = entryPrice;
 		this.openTime = openTime;
 	}
-	
+
 	public Trade(String instrumentName, long numberOfInstruments, float entryPrice,
 			String notes, byte[] image, Date openTime) {
 		super();
@@ -97,7 +97,7 @@ public class Trade {
 		this.notes = notes;
 		this.image = image;
 	}
-	
+
 	public Trade(String instrumentName, long numberOfInstruments, float entryPrice,
 			float closePrice, Date openTime, String side) {
 		super();
@@ -108,7 +108,7 @@ public class Trade {
 		this.side = side;
 		this.closePrice = closePrice;
 	}
-	
+
 	public Trade(String instrumentName, long numberOfInstruments, float entryPrice,
 			float closePrice, String notes, byte[] image, Date openTime, String side) {
 		super();
@@ -121,7 +121,7 @@ public class Trade {
 		this.side = side;
 		this.closePrice = closePrice;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -217,6 +217,6 @@ public class Trade {
 	public void setSide(String side) {
 		this.side = side;
 	}
-	
-	
+
+
 }
